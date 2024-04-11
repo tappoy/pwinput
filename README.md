@@ -15,8 +15,8 @@ This golang package provides a robust way to read password from the terminal.
 # Errors
 - `ErrInterrupted`: The input process is interrupted.
 
-# LICENSE
-This software is licensed under the LGPL-3.0 license. For more information, see the LICENSE file.
+# License
+[LGPL-3.0](LICENSE)
 
-# AUTHOR
+# Author
 [tappoy](https://github.com/tappoy)
