@@ -9,6 +9,11 @@ import (
 	"golang.org/x/crypto/ssh/terminal"
 )
 
+// Errors
+var (
+  ErrInterrupted = errors.New("ErrInterrupted")
+)
+
 func ReadPassword() (string, error) {
 	// caputure the signal of Ctrl+C
 	signalChan := make(chan os.Signal)
@@ -33,7 +38,7 @@ func ReadPassword() (string, error) {
 		<-signalChan
 		// restore the terminal state after receiving Ctrl+C
 		terminal.Restore(int(syscall.Stdin), currentState)
-		errChan <- errors.New("ErrInterrupted")
+		errChan <- ErrInterrupted
 	}()
 
 	go func() {
