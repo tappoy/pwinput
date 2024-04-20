@@ -9,7 +9,8 @@ import (
 // test
 func main() {
   fmt.Println("Enter your password: ")
-  password, err := pwinput.ReadPassword()
+  pwi := pwinput.NewPasswordInput()
+  password, err := pwi.InputPassword()
   if err != nil {
     fmt.Printf("An error occurred: %s\n", err)
   } else {

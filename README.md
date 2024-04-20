@@ -9,8 +9,16 @@ This golang package provides a robust way to read password from the terminal.
 - Mute the terminal while inputting the password.
 - If interrupted while inputting the password, the terminal will be turned back to normal.
 
+# Interfaces
+```go
+type PasswordInput interface {
+  InputPassword() (string, error)
+}
+```
+
 # Functions
-- `ReadPassword() (string, error)`
+- `NewPasswordInput() PasswordInput`: Create a new password reader.
+- `NewDummyPasswordInput(dummyPassword string) PasswordInput`: Create a dummy password reader for testing. It will return the dummy password when calling `Inputssword()`.
 
 # Errors
 - `ErrInterrupted`: The input process is interrupted.
