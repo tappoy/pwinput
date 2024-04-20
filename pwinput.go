@@ -11,10 +11,33 @@ import (
 
 // Errors
 var (
-  ErrInterrupted = errors.New("ErrInterrupted")
+	ErrInterrupted = errors.New("ErrInterrupted")
 )
 
-func ReadPassword() (string, error) {
+// Interface
+type PasswordInput interface {
+	InputPassword() (string, error)
+}
+
+// Dummy implementation
+type dummyPasswordInput struct {
+	dummyPassword string
+}
+
+// dummyPasswordInput InputPassword
+func (pw dummyPasswordInput) InputPassword() (string, error) {
+	return pw.dummyPassword, nil
+}
+
+// dummyPasswordInput constructor
+func NewDummyPasswordInput(dummyPassword string) PasswordInput {
+	return dummyPasswordInput{dummyPassword: dummyPassword}
+}
+
+// True implementation
+type passwordInputImpl struct{}
+
+func (pw passwordInputImpl) InputPassword() (string, error) {
 	// caputure the signal of Ctrl+C
 	signalChan := make(chan os.Signal)
 	signal.Notify(signalChan, os.Interrupt)
@@ -56,4 +79,9 @@ func ReadPassword() (string, error) {
 	case err := <-errChan:
 		return "", err
 	}
+}
+
+// PasswordInput constructor
+func NewPasswordInput() PasswordInput {
+	return passwordInputImpl{}
 }
