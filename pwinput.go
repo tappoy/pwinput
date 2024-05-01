@@ -1,3 +1,8 @@
+// This package provides a robust way to read password from the terminal.
+//
+//   - Read password from the stdin.
+//   - Mute the terminal while inputting the password.
+//   - If interrupted while inputting the password, the terminal will be turned back to normal.
 package pwinput
 
 import (
@@ -9,13 +14,16 @@ import (
 	"golang.org/x/crypto/ssh/terminal"
 )
 
-// Errors
 var (
+	// The input process is interrupted.
 	ErrInterrupted = errors.New("ErrInterrupted")
 )
 
-// Interface
 type PasswordInput interface {
+	// InputPassword reads a password from the terminal.
+	// If DummyPasswordInput is used, it will return the dummy password.
+	//   Errors:
+	//   - ErrInterrupted
 	InputPassword() (string, error)
 }
 
@@ -24,12 +32,13 @@ type dummyPasswordInput struct {
 	dummyPassword string
 }
 
-// dummyPasswordInput InputPassword
+// Return the dummy password
 func (pw dummyPasswordInput) InputPassword() (string, error) {
 	return pw.dummyPassword, nil
 }
 
-// dummyPasswordInput constructor
+// Create a dummy password reader for testing or some other purposes.
+// It will return the dummy password when calling `Inputssword()`.
 func NewDummyPasswordInput(dummyPassword string) PasswordInput {
 	return dummyPasswordInput{dummyPassword: dummyPassword}
 }
@@ -37,6 +46,7 @@ func NewDummyPasswordInput(dummyPassword string) PasswordInput {
 // True implementation
 type passwordInputImpl struct{}
 
+// InputPassword reads a password from the terminal.
 func (pw passwordInputImpl) InputPassword() (string, error) {
 	// caputure the signal of Ctrl+C
 	signalChan := make(chan os.Signal)
@@ -81,7 +91,7 @@ func (pw passwordInputImpl) InputPassword() (string, error) {
 	}
 }
 
-// PasswordInput constructor
+// Create a new password reader.
 func NewPasswordInput() PasswordInput {
 	return passwordInputImpl{}
 }
