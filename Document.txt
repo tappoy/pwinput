@@ -12,6 +12,9 @@ VARIABLES
 var (
 	// The input process is interrupted.
 	ErrInterrupted = errors.New("ErrInterrupted")
+
+	// The dummy password to generate ErrInterrupted.
+	Interrput = "Interrupt"
 )
 
 TYPES
@@ -19,7 +22,7 @@ TYPES
 type PasswordInput interface {
 	// InputPassword reads a password from the terminal.
 	// If DummyPasswordInput is used, it will return the dummy password.
-	//   Errors:
+	// Errors:
 	//   - ErrInterrupted
 	InputPassword() (string, error)
 }
@@ -27,6 +30,9 @@ type PasswordInput interface {
 func NewDummyPasswordInput(dummyPassword string) PasswordInput
     Create a dummy password reader for testing or some other purposes. It will
     return the dummy password when calling `Inputssword()`.
+
+    If dummyPassword is "Interrupt" or pwinput.Interrupt, it will return
+    ErrInterrupted when calling `InputPassword()`
 
 func NewPasswordInput() PasswordInput
     Create a new password reader.

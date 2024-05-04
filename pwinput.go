@@ -17,12 +17,15 @@ import (
 var (
 	// The input process is interrupted.
 	ErrInterrupted = errors.New("ErrInterrupted")
+
+	// The dummy password to generate ErrInterrupted.
+	Interrput = "Interrupt"
 )
 
 type PasswordInput interface {
 	// InputPassword reads a password from the terminal.
 	// If DummyPasswordInput is used, it will return the dummy password.
-	//   Errors:
+	// Errors:
 	//   - ErrInterrupted
 	InputPassword() (string, error)
 }
@@ -32,13 +35,22 @@ type dummyPasswordInput struct {
 	dummyPassword string
 }
 
-// Return the dummy password
+// Return the dummy password.
+// Errors:
+//   - ErrInterrupted
 func (pw dummyPasswordInput) InputPassword() (string, error) {
-	return pw.dummyPassword, nil
+	if pw.dummyPassword == "Interrupt" {
+		return "", ErrInterrupted
+	} else {
+		return pw.dummyPassword, nil
+	}
 }
 
 // Create a dummy password reader for testing or some other purposes.
 // It will return the dummy password when calling `Inputssword()`.
+//
+// If dummyPassword is "Interrupt" or pwinput.Interrupt,
+// it will return ErrInterrupted when calling `InputPassword()`
 func NewDummyPasswordInput(dummyPassword string) PasswordInput {
 	return dummyPasswordInput{dummyPassword: dummyPassword}
 }
