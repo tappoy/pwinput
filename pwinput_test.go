@@ -12,3 +12,10 @@ func TestDummyPasswordInput(t *testing.T) {
 		t.Error("Password is not correct")
 	}
 }
+
+func TestDummyPasswordInputInterrupt(t *testing.T) {
+	pwi := NewDummyPasswordInput("Interrupt")
+	if _, err := pwi.InputPassword(); err != ErrInterrupted {
+		t.Error(err)
+	}
+}
