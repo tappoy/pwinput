@@ -19,7 +19,7 @@ var (
 	ErrInterrupted = errors.New("ErrInterrupted")
 
 	// The dummy password to generate ErrInterrupted.
-	Interrput = "Interrupt"
+	Interrupt = "Interrupt"
 )
 
 type PasswordInput interface {
