@@ -2,17 +2,24 @@ package pwinput // import "github.com/tappoy/pwinput"
 
 This package provides a robust way to read password from the terminal.
 
-  - Read password from the stdin.
+Features:
+  - Read password from the terminal.
   - Mute the terminal while inputting the password.
   - If interrupted while inputting the password, the terminal will be turned
     back to normal.
+  - If the input is not from the terminal, it will read from the Env.In.
+
+Dependencies:
+  - github.com/tappoy/env (Env.In)
+  - golang.org/x/crypto/ssh/terminal
 
 VARIABLES
 
 var (
 	// The input process is interrupted.
 	ErrInterrupted = errors.New("ErrInterrupted")
-
+)
+var (
 	// The dummy password to generate ErrInterrupted.
 	Interrupt = "Interrupt"
 )
@@ -23,7 +30,7 @@ type PasswordInput interface {
 	// InputPassword reads a password from the terminal.
 	// If DummyPasswordInput is used, it will return the dummy password.
 	// Errors:
-	//   - ErrInterrupted
+	//	- ErrInterrupted
 	InputPassword() (string, error)
 }
 
